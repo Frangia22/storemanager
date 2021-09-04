@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const product = sequelize.define('storemanager', {
+    const product = sequelize.define('product', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,

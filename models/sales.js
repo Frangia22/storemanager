@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const sales = sequelize.define('storemanager', {
+    const sales = sequelize.define('sales', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         products: DataTypes.STRING(200),
         date: {
-            type: DataTypes.DATETIME,
+            type: DataTypes.DATE,
             defaultValue: sequelize.NOW
         },
         amount: DataTypes.DECIMAL(10,2),
