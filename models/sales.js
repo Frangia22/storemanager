@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         products: DataTypes.STRING(200),
         date: {
-            type: DataTypes.DATE,
-            defaultValue: sequelize.NOW
+            type: DataTypes.DATEONLY,
         },
         amount: DataTypes.DECIMAL(10,2),
         payment: DataTypes.STRING(50),
