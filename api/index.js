@@ -1,6 +1,36 @@
-const { sequelize, Op } = require('sequelize');
+const { sequelize, Op, fn } = require('sequelize');
 const db = require('../models');
 /* FRONTEND */
+/* ---------------- Home -------------------------------- */
+const getCountProduct = async () => {
+    const products = await db.sales.count({
+        attributes: ['products', 'amount'],
+        group: ['products'],
+        order: [
+            ['amount', 'DESC']
+        ]
+    });
+    console.log(products);
+    return products;
+}
+const getIngresoTotal = async() => { 
+    const ingresoTotal = await db.sales.sum('amount');
+    return ingresoTotal;
+}
+const getTotalVendido = async() => { 
+    const vendidoTotal = await db.sales.count('products');
+    return vendidoTotal;
+}
+const getLastSales = async () => {
+    const sale = await db.sales.findAll({
+        limit: 10,
+        order: [
+            ['date', 'DESC']
+        ]
+    });
+    return sale;
+}
+/* ---------------- SALES -------------------------------- */
 const getSales = async () => {
     const sales = await db.sales.findAll()
     .then(result => {
@@ -15,7 +45,23 @@ const getSaleById = async (id) => {
     });
     return sale;
 }
+/* ---------------- PRODUCT -------------------------------- */
+const getProducts = async () => {
+    const products = await db.product.findAll()
+    .then(result => {
+        return result;
+    });
+    return products;
+}
+const getProductById = async (id) => {
+    const product = await db.product.findByPk(id)
+    .then(result => {
+        return result;
+    });
+    return product;
+}
 /* BACKEND */
+/* ---------------- SALES -------------------------------- */
 const addSale = async (products, date, amount, payment) => {
     const sale = await db.sales.create({
         products,
@@ -41,10 +87,48 @@ const deleteSale = async (idSale) => {
     });
     return sale;
 };
+/* ---------------- PRODUCT -------------------------------- */
+const addProduct = async(name, amount, stock, url) => {
+    const product = await db.product.create({
+        name, 
+        amount, 
+        stock, 
+        url
+    });
+    return product;
+};
+const editProduct = async (id, name, amount, stock, url) => {
+    const product = await db.product.update({name, amount, stock, url}, {
+        where: {
+            id
+        }
+    });
+    return product;
+};
+const deleteProduct = async (idProduct) => {
+    const product = await db.product.destroy({
+        where: {
+            id: idProduct
+        }
+    });
+    return product;
+};
 module.exports = {
+    /* ---------------- Sales -------------------------------- */
     addSale,
     editSale,
     deleteSale,
     getSales,
-    getSaleById
+    getSaleById,
+    /* ---------------- Product -------------------------------- */
+    addProduct,
+    editProduct,
+    deleteProduct,
+    getProducts,
+    getProductById,
+    /* ---------------- Home -------------------------------- */
+    getCountProduct,
+    getIngresoTotal,
+    getTotalVendido,
+    getLastSales
 }

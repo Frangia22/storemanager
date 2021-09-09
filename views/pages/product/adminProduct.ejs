@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../../partials/head') %>
+  <body>
+    <%- include('../../partials/header') %>
+    <%- include('../../partials/nav') %>
+    <main id="content">
+        <div class="container">
+                <ul class="subtitle-list">
+                    <li class="subtitle-item subtitle-item-admin">
+                        <h1 class="subtitle-item-link">Panel de administración Productos</h1>
+                    </li>                    
+                </ul>
+        </div>
+        <% if(message) { %>
+            <div class="form-group-6 m-auto alert alert-success" role="alert" id="messageAlert">
+                <strong><%= message %></strong>
+                <button aria-hidden="true" data-dismiss="alert" id="btnClose" class="close" type="button">&#10006;</button>
+            </div>
+        <% } %>
+        <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="hide-field">ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th class="hide-field">Cantidad</th>
+                    <th class="hide-field">Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <% products.forEach(product => { %>
+                <tbody>
+                    <tr>
+                        <td class="hide-field"><%= product.id %></td>
+                        <td><%= product.name %></td>
+                        <td>$ <%= product.amount %></td>
+                        <td class="hide-field"><%= product.stock %></td>
+                        <td class="hide-field"><%= product.url %></td>
+                        <td>
+                            <a class="hide-field btn btn-edit" href="/editProduct/<%= product.id %>">Editar</a>
+                            <a class="hide-field btn btn-delete" href="/deleteProduct/<%= product.id %>">Eliminar</a>
+                            <a href="" class="btn btn-edit hide show-btn" data-bs-toggle="modal" data-bs-target="#verProducto-<%= product.id %>">Ver detalles</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <div class="modal fade hide-field hide" id="verProducto-<%= product.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Producto N° <%= product.id %></h5>
+                                <button aria-hidden="true" data-dismiss="alert" data-bs-dismiss="modal" id="btnClose" class="close close-modal" type="button">&#10006;</button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list">
+                                    <li class="list-item">
+                                        <p class="card-text"><strong>Nombre</strong></p>
+                                        <p class="card-text"><%= product.name %></p>
+                                    </li>
+                                    <li class="list-item">
+                                        <p class="card-text"><strong>Precio</strong></p>
+                                        <p class="card-text">$ <%= product.amount %></p>
+                                    </li>
+                                    <li class="list-item">
+                                        <p class="card-text"><strong>Cantidad</strong></p>
+                                        <p class="card-text"><%= product.stock %></p>
+                                    </li>
+                                    <li class="list-item">
+                                        <p class="card-text"><strong>Imagen</strong></p>
+                                        <p class="card-text"><%= product.url %></p>
+                                    </li>
+                                    <li class="list-item">
+                                        <p class="card-text"><strong>Acciones</strong></p>
+                                        <a class="btn btn-edit" href="/editProduct/<%= product.id %>">Editar</a>
+                                        <a class="btn btn-delete" href="/deleteProduct/<%= product.id %>">Eliminar</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </table>
+        <div class="add-product">
+            <a class="btn btn-add" href="/addProduct">Agregar producto</a>
+        </div>
+    </div>
+    </main>
+    <%- include('../../partials/footer') %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        const btn = document.querySelector('#btnClose');
+        btn.addEventListener('click', () => {
+            messageAlert.style.display = 'none';
+        });
+    </script>
+  </body>
+</html>
