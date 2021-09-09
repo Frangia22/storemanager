@@ -367,6 +367,9 @@ body{
     flex-wrap: wrap;
     justify-content: space-between;
 }
+.list-balance {
+    font-size: 1.4em;
+}
 /* --------- Panel de administracion ----------------*/
 .subtitle-item-admin{
     text-align: center;

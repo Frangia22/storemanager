@@ -7,58 +7,19 @@
     <main id="content">
       <div class="balance">
         <div class="card">
-            <div class="header-subtitle">
-                <ul class="subtitle-list">
-                    <li class="subtitle-item subtitle-item-admin"><h1 class="subtitle-item-link">Balance Semanal <img class="img-arrow" src="{% static 'img/budget.svg'%}" alt=""></h1></li>
-                </ul>
-            </div>
-            <ul class="list py-2">
-                <li class="list-balance"><a class="list-item">Ingresos</a></li>
-                <li class="list-balance"><a class="list-item text-success">$  0</a></li>
-            </ul>
-            <ul class="list py-2">
-                <li class="list-balance"><a class="list-item">Gastos</a></li>
-                <li class="list-balance"><a class="list-item text-warning">$ 0</a></li>
-            </ul>
-            <hr>
-            <!-- {% if balanceSemanal > 0  %} -->
-                <ul class="list py-2">
-                    <li class="list-balance"><a class="list-item ">Balance</a></li>
-                    <li class="list-balance"><a class="list-item text-success d-flex">$  0 <img class="img-arrow" src="{% static 'img/flechaarriba.svg'%}" alt=""></a></li>
-                </ul>
-            <!-- {% else %} -->
-                <ul class="list py-2">
-                    <li class="list-balance"><a class="list-item">Balance</a></li>
-                    <li class="list-balance"><a class="list-item text-warning d-flex">$  0 <img class="img-arrow" src="{% static 'img/flechaabajo.svg'%}" alt=""></a></li>
-                </ul>
-            <!-- {% endif %} -->
-        </div>
-        <div class="card">
           <div class="header-subtitle">
               <ul class="subtitle-list">
-                  <li class="subtitle-item subtitle-item-admin"><h1 class="subtitle-item-link">Balance Semanal <img class="img-arrow" src="{% static 'img/budget.svg'%}" alt=""></h1></li>
+                  <li class="subtitle-item subtitle-item-admin"><h1 class="subtitle-item-link">Balance <img class="img-arrow" src="images/budget.svg" alt=""></h1></li>
               </ul>
           </div>
           <ul class="list py-2">
               <li class="list-balance"><a class="list-item">Ingresos</a></li>
-              <li class="list-balance"><a class="list-item text-success">$  0</a></li>
+              <li class="list-balance"><a class="list-item text-success">$  <%= ingresoTotal %></a></li>
           </ul>
           <ul class="list py-2">
-              <li class="list-balance"><a class="list-item">Gastos</a></li>
-              <li class="list-balance"><a class="list-item text-warning">$ 0</a></li>
+              <li class="list-balance"><a class="list-item">Productos</a></li>
+              <li class="list-balance"><a class="list-item text-warning"><%= vendidoTotal %></a></li>
           </ul>
-          <hr>
-          <!-- {% if balanceSemanal > 0  %} -->
-              <ul class="list py-2">
-                  <li class="list-balance"><a class="list-item ">Balance</a></li>
-                  <li class="list-balance"><a class="list-item text-success d-flex">$  0 <img class="img-arrow" src="{% static 'img/flechaarriba.svg'%}" alt=""></a></li>
-              </ul>
-          <!-- {% else %} -->
-              <ul class="list py-2">
-                  <li class="list-balance"><a class="list-item">Balance</a></li>
-                  <li class="list-balance"><a class="list-item text-warning d-flex">$  0 <img class="img-arrow" src="{% static 'img/flechaabajo.svg'%}" alt=""></a></li>
-              </ul>
-          <!-- {% endif %} -->
       </div>
       </div>
       <div class="container">
@@ -69,12 +30,56 @@
         </div>
       </div>
       <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="hide-field">ID</th>
+                    <th>Productos</th>
+                    <th class="hide-field">Fecha</th>
+                    <th>Monto</th>
+                    <th class="hide-field">Tipo de pago</th>
+                </tr>
+            </thead>
+            <% lastSales.forEach(sale => { %>
+                <tbody>
+                    <tr>
+                        <td class="hide-field"><%= sale.id %></td>
+                        <td><%= sale.products %></td>
+                        <td class="hide-field"><%= sale.date %></td>
+                        <td>$ <%= sale.amount %></td>
+                        <td class="hide-field"><%= sale.payment %></td>                    
+                    </tr>
+                </tbody>
+              <% }) %>
+          </table>
+      </div>
+      <div class="container">
         <div class="header-subtitle">
           <ul class="subtitle-list">
-            <li class="subtitle-item subtitle-item-admin"><h1 class="subtitle-item-link">Productos sin stock</h1></li>
+            <li class="subtitle-item subtitle-item-admin"><h1 class="subtitle-item-link">Productos mas vendidos</h1></li>
           </ul>
         </div>
       </div>
+      <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad vendidos</th>
+                    <th>Precio Unitario</th>                  
+                </tr>
+            </thead>
+            <% products.forEach(product => { %>
+                <tbody>
+                    <tr>        
+                        <td><%= product.products %></td>
+                        <td><%= product.count %></td>                        
+                        <td>$ <%= product.amount %></td>
+                    </tr>
+                </tbody>
+            <% }) %>
+        </table>
+      </div>      
     </main>
     <%- include('./partials/footer') %>
   </body>
