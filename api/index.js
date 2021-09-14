@@ -1,16 +1,15 @@
-const { sequelize, Op, fn } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const db = require('../models');
 /* FRONTEND */
 /* ---------------- Home -------------------------------- */
 const getCountProduct = async () => {
-    const products = await db.sales.count({
-        attributes: ['products', 'amount'],
+    const products = await db.sales.findAll({
+        attributes: ['products', 'amount', [Sequelize.fn('count', Sequelize.col('products')), 'cantidad']],
         group: ['products'],
-        order: [
-            ['amount', 'DESC']
-        ]
+        raw: true,
+        order: Sequelize.literal('cantidad DESC'),
+        limit: 10
     });
-    console.log(products);
     return products;
 }
 const getIngresoTotal = async() => { 
@@ -130,5 +129,5 @@ module.exports = {
     getCountProduct,
     getIngresoTotal,
     getTotalVendido,
-    getLastSales
+    getLastSales,
 }

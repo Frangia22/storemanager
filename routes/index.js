@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const api = require('../api')
+const api = require('../api');
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
 /* Rutas FRONTEND */
 /* GET home page. */
@@ -9,12 +11,12 @@ router.get('/', async (req, res) => {
   const ingresoTotal = await api.getIngresoTotal();
   const vendidoTotal = await api.getTotalVendido();
   const lastSales = await api.getLastSales();
-  console.log(vendidoTotal);
+  //console.log(vendidoTotal);
   res.render('index', { title: 'Store manager', products, ingresoTotal, vendidoTotal, lastSales });
 });
 /* ---------------- Sales -------------------------------- */
 /* Admin sales Get */
-router.get('/adminSale', async (req, res) => {
+router.get('/adminSale',  async (req, res) => {
   const sales = await api.getSales();
   res.render('pages/sales/adminSale', { title: 'Admin Ventas', sales, message:'' });
 });
@@ -39,7 +41,7 @@ router.get('/deleteSale/:id', async(req, res) => {
 });
 /* ---------------- Product -------------------------------- */
 /* Admin product Get */
-router.get('/adminProduct', async (req, res) => {
+router.get('/adminProduct',  async (req, res) => {
   const products = await api.getProducts();
   res.render('pages/product/adminProduct', { title: 'Admin Productos', products, message:'' });
 });
@@ -61,6 +63,10 @@ router.get('/deleteProduct/:id', async(req, res) => {
   }else{
     res.send('Algo salio mal en el proceso de eliminación');
   }
+});
+/* ---------------- Login -------------------------------- */
+router.get('/login', (req, res) => {
+  res.render('pages/login', { title: 'Login' } )
 });
 /* Rutas BACKEND */
 /* ---------------- Sales -------------------------------- */
@@ -94,4 +100,33 @@ router.post('/editProduct/:id', async (req, res) => {
   const products = await api.getProducts()
   res.render('pages/product/adminProduct', { title: 'Admin Productos', products, message: 'Producto actualizado correctamente'});
 });
+/* ---------------- Login POST -------------------------------- */
+router.post('/auth', (req, res) => {
+  const { username, password } = req.body;
+  //COnsultar BD y validar
+  const user = { username: username};
+  //Generar accessToken
+  //generateAccessToken pide informacion para incriptar
+  const accessToken = generateAccessToken(user);
+  res.cookie('jwt', accessToken);
+  res.header('authorization', accessToken).json({
+    message: 'Usuario autenticado',
+    token: accessToken
+  });
+});
+function generateAccessToken(user) {
+  //Payload info a encriptar
+  return jwt.sign(user, process.env.SECRET, {expiresIn: '5m'});
+};
+function validateToken(req, res, next) {
+  const accessToken = req.headers['authorization'];
+  if(!accessToken) res.send('Accesso denegado');
+  jwt.verify(accessToken, process.env.SECRET, (err, user) => {
+      if(err) {
+        res.send('Acceso denegado, token expirado o incorrecto');
+      }else{
+        next();
+      }
+  });
+};
 module.exports = router;
