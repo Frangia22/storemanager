@@ -21,13 +21,15 @@ router.get('/adminSale',  async (req, res) => {
   res.render('pages/sales/adminSale', { title: 'Admin Ventas', sales, message:'' });
 });
 /* Agregar sales Get */
-router.get('/addSale', (req, res) => {
-  res.render('pages/sales/addSale', { title: 'Agregar Venta' });
+router.get('/addSale', async (req, res) => {
+  const productAndAmount = await api.getProductAndAmount();
+  res.render('pages/sales/addSale', { title: 'Agregar Venta', productAndAmount });
 });
 /* Editar sales Get */
 router.get('/editSale/:id', async(req, res) => {
   const sale = await api.getSaleById(req.params.id);
-  res.render('pages/sales/editSale', { title: 'Editar Venta', sale });
+  const productAndAmount = await api.getProductAndAmount();
+  res.render('pages/sales/editSale', { title: 'Editar Venta', sale, productAndAmount });
 });
 /* Delete sales Get */
 router.get('/deleteSale/:id', async(req, res) => {

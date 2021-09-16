@@ -9,8 +9,12 @@
             <form class="form-group" action="/editSale/<%= sale.id %>" method="post">
                 <div class="form-group-6">    
                     <label for="products" class="form-label">Productos</label>
-                    <textarea class="form-control" id="products" rows="6"  placeholder="Productos vendidos"
-                    name="products" required><%= sale.products %></textarea>
+                    <select class="form-control" name="products" id="products" required>
+                        <option value=""><%= sale.products %></option>
+                    <% productAndAmount.forEach(productName => { %>
+                        <option value="<%= productName.name %>"><%= productName.name %></option>
+                    <% }) %>
+                    </select>   
                 </div>
                 <div class="form-group-6">
                     <label for="date" class="form-label">Fecha</label>
@@ -18,11 +22,17 @@
                 </div>
                 <div class="form-group-6">
                     <label for="amount" class="form-label">Monto</label>
-                    <input class="form-control" type="text" value="<%= sale.amount %>" name="amount" id="amount" required>
+                    <select class="form-control" name="amount" id="amount" required>
+                        <option value=""><%= sale.amount %></option>
+                        <% productAndAmount.forEach(product => { %>
+                            <option value="<%= product.amount %>"><%= product.name %> - $ <%= product.amount %></option>
+                        <% }) %>
+                    </select> 
                 </div>
                 <div class="form-group-6">   
                     <label for="payment" class="form-label">Tipo de pago</label>
                     <select class="form-control" type="text" name="payment" id="payment">
+                        <option value=""><%= sale.payment %></option>
                         <option value="Efectivo">Efectivo</option>
                         <option value="MP">Mercado Pago</option>
                     </select>

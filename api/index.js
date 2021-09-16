@@ -86,6 +86,17 @@ const deleteSale = async (idSale) => {
     });
     return sale;
 };
+const getProductAndAmount = async () => {
+    const productAndAmount = await db.product.findAll({
+        attributes: ['name', 'amount'],
+        order: [
+            ['name', 'ASC']
+        ]
+    }).then(result => {
+        return result;
+    });
+    return productAndAmount;
+};
 /* ---------------- PRODUCT -------------------------------- */
 const addProduct = async(name, amount, stock, url) => {
     const product = await db.product.create({
@@ -119,6 +130,7 @@ module.exports = {
     deleteSale,
     getSales,
     getSaleById,
+    getProductAndAmount,
     /* ---------------- Product -------------------------------- */
     addProduct,
     editProduct,

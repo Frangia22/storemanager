@@ -858,6 +858,10 @@ button.close {
     .bg-white {
         background-color: var(--white);
     }
+    /* ------------------------------ Formularios --------------------------*/
+    .form-group-6{
+        width: 100%;
+    }
     /*------------------------------------- Footer ----------------------------------------------*/
     .list-item{
         min-width: 100%;
